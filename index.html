@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Snake Game - William Osei Aborah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+        
+        .logo h1 {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+        
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: #667eea;
+        }
+        
+        .project-detail {
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: white;
+            margin-top: 70px;
+        }
+        
+        .project-detail h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .lead {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .project-content {
+            background: white;
+            color: #333;
+            padding: 3rem 0;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+            justify-content: center;
+        }
+        
+        .tech-item {
+            background: #4a6fdc;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .game-board {
+            width: 400px;
+            height: 400px;
+            border: 3px solid #333;
+            background: #000;
+            position: relative;
+            margin: 1rem;
+            border-radius: 8px;
+        }
+        
+        .game-controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .score-board {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .game-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .game-btn:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .game-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .instructions {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #2196f3;
+            max-width: 500px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.75rem 2rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .project-detail h1 {
+                font-size: 2rem;
+            }
+            
+            .game-board {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .game-container {
+                padding: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><a href="https://william-osei.github.io/portfolio">William Osei Aborah</a></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="https://william-osei.github.io/portfolio#about">About</a></li>
+                    <li><a href="https://william-osei.github.io/portfolio#projects">Projects</a></li>
+                    <li><a href="https://william-osei.github.io/portfolio#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="project-detail">
+            <div class="container">
+                <h1>🐍 Classic Snake Game</h1>
+                <p class="lead">A modern recreation of the classic Snake game using HTML5 Canvas and JavaScript with smooth animations and responsive controls.</p>
+            </div>
+        </section>
+
+        <section class="project-content">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Game Overview</h2>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem;">This Snake game brings back the nostalgic gaming experience with modern web technologies. Built with HTML5 Canvas for smooth graphics and responsive JavaScript controls, it features score tracking, speed progression, and collision detection.</p>
+
+                <div class="tech-stack">
+                    <span class="tech-item">🌐 HTML5</span>
+                    <span class="tech-item">🎨 CSS3</span>
+                    <span class="tech-item">⚡ JavaScript</span>
+                    <span class="tech-item">🎥 Canvas API</span>
+                    <span class="tech-item">🎮 Game Logic</span>
+                </div>
+
+                <div class="game-container">
+                    <h3>🎮 Play Snake Game</h3>
+                    
+                    <div class="score-board">
+                        <div style="display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap;">
+                            <div>
+                                <h4>Score: <span id="score">0</span></h4>
+                            </div>
+                            <div>
+                                <h4>High Score: <span id="highScore">0</span></h4>
+                            </div>
+                            <div>
+                                <h4>Speed: <span id="speed">1</span></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <canvas id="gameCanvas" class="game-board" width="400" height="400"></canvas>
+
+                    <div class="game-controls">
+                        <button id="startBtn" class="game-btn">Start Game</button>
+                        <button id="pauseBtn" class="game-btn" disabled>Pause</button>
+                        <button id="resetBtn" class="game-btn">Reset</button>
+                    </div>
+
+                    <div class="instructions">
+                        <h4>🎯 How to Play</h4>
+                        <ul style="margin: 0; padding-left: 1.5rem;">
+                            <li>Use arrow keys or WASD to control the snake</li>
+                            <li>Eat the red food to grow and increase your score</li>
+                            <li>Avoid hitting the walls or your own tail</li>
+                            <li>Speed increases every 5 points scored</li>
+                            <li>Press spacebar to pause/resume the game</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="text-align: center; margin: 2rem 0;">Game Features</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                    <div style="background: #e8f5e8; padding: 2rem; border-radius: 8px; border-left: 4px solid #27ae60;">
+                        <h4>🎮 Smooth Controls</h4>
+                        <p>Responsive arrow key and WASD controls with collision detection and smooth movement animations.</p>
+                    </div>
+                    <div style="background: #fff3e0; padding: 2rem; border-radius: 8px; border-left: 4px solid #ff9800;">
+                        <h4>📊 Score System</h4>
+                        <p>Real-time score tracking with high score persistence using local storage.</p>
+                    </div>
+                    <div style="background: #f3e5f5; padding: 2rem; border-radius: 8px; border-left: 4px solid #9c27b0;">
+                        <h4>⚡ Progressive Speed</h4>
+                        <p>Game speed increases as you score more points, making it progressively challenging.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 3rem 0;">
+                    <a href="https://william-osei.github.io/portfolio#projects" class="btn">← Back to Projects</a>
+                    <a href="https://github.com/William-osei/snake_game" class="btn" style="margin-left: 1rem; background: #333;">View Code</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 William Osei Aborah. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Snake Game JavaScript
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const highScoreElement = document.getElementById('highScore');
+        const speedElement = document.getElementById('speed');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Game variables
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+
+        let snake = [
+            {x: 10, y: 10}
+        ];
+        let food = {};
+        let dx = 0;
+        let dy = 0;
+        let score = 0;
+        let gameRunning = false;
+        let gamePaused = false;
+        let gameSpeed = 200;
+        let gameLoop;
+
+        // Load high score from localStorage
+        let highScore = localStorage.getItem('snakeHighScore') || 0;
+        highScoreElement.textContent = highScore;
+
+        function randomTilePosition() {
+            return Math.floor(Math.random() * tileCount);
+        }
+
+        function generateFood() {
+            food = {
+                x: randomTilePosition(),
+                y: randomTilePosition()
+            };
+            
+            // Make sure food doesn't spawn on snake
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    generateFood();
+                    return;
+                }
+            }
+        }
+
+        function drawGame() {
+            // Clear canvas
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw snake
+            ctx.fillStyle = '#4ecdc4';
+            for (let segment of snake) {
+                ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
+            }
+
+            // Draw snake head differently
+            ctx.fillStyle = '#45b7aa';
+            ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
+
+            // Draw food
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+        }
+
+        function moveSnake() {
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+            // Add new head
+            snake.unshift(head);
+
+            // Check if food eaten
+            if (head.x === food.x && head.y === food.y) {
+                score += 1;
+                scoreElement.textContent = score;
+                
+                // Increase speed every 5 points
+                if (score % 5 === 0) {
+                    gameSpeed = Math.max(80, gameSpeed - 20);
+                    speedElement.textContent = Math.floor((200 - gameSpeed) / 20) + 1;
+                    clearInterval(gameLoop);
+                    if (gameRunning && !gamePaused) {
+                        gameLoop = setInterval(game, gameSpeed);
+                    }
+                }
+                
+                generateFood();
+            } else {
+                // Remove tail
+                snake.pop();
+            }
+        }
+
+        function checkCollision() {
+            const head = snake[0];
+
+            // Wall collision
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                return true;
+            }
+
+            // Self collision
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            clearInterval(gameLoop);
+            
+            // Update high score
+            if (score > highScore) {
+                highScore = score;
+                highScoreElement.textContent = highScore;
+                localStorage.setItem('snakeHighScore', highScore);
+            }
+            
+            // Show game over message
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = '30px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
+            ctx.font = '16px Arial';
+            ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2 + 20);
+            
+            startBtn.disabled = false;
+            startBtn.textContent = 'Start Game';
+            pauseBtn.disabled = true;
+        }
+
+        function game() {
+            if (gamePaused) return;
+            
+            moveSnake();
+            
+            if (checkCollision()) {
+                gameOver();
+                return;
+            }
+            
+            drawGame();
+        }
+
+        function startGame() {
+            if (gameRunning) return;
+            
+            // Reset game state
+            snake = [{x: 10, y: 10}];
+            dx = 0;
+            dy = 0;
+            score = 0;
+            gameSpeed = 200;
+            gamePaused = false;
+            scoreElement.textContent = score;
+            speedElement.textContent = 1;
+            
+            generateFood();
+            gameRunning = true;
+            
+            gameLoop = setInterval(game, gameSpeed);
+            
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            pauseBtn.textContent = 'Pause';
+            
+            drawGame();
+        }
+
+        function pauseGame() {
+            if (!gameRunning) return;
+            
+            gamePaused = !gamePaused;
+            
+            if (gamePaused) {
+                clearInterval(gameLoop);
+                pauseBtn.textContent = 'Resume';
+            } else {
+                gameLoop = setInterval(game, gameSpeed);
+                pauseBtn.textContent = 'Pause';
+            }
+        }
+
+        function resetGame() {
+            gameRunning = false;
+            gamePaused = false;
+            clearInterval(gameLoop);
+            
+            // Reset game state
+            snake = [{x: 10, y: 10}];
+            dx = 0;
+            dy = 0;
+            score = 0;
+            gameSpeed = 200;
+            scoreElement.textContent = score;
+            speedElement.textContent = 1;
+            
+            generateFood();
+            drawGame();
+            
+            startBtn.disabled = false;
+            startBtn.textContent = 'Start Game';
+            pauseBtn.disabled = true;
+            pauseBtn.textContent = 'Pause';
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startGame);
+        pauseBtn.addEventListener('click', pauseGame);
+        resetBtn.addEventListener('click', resetGame);
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (!gameRunning || gamePaused) {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    if (gameRunning) pauseGame();
+                }
+                return;
+            }
+            
+            switch(e.code) {
+                case 'ArrowUp':
+                case 'KeyW':
+                    if (dy !== 1) {
+                        dx = 0;
+                        dy = -1;
+                    }
+                    break;
+                case 'ArrowDown':
+                case 'KeyS':
+                    if (dy !== -1) {
+                        dx = 0;
+                        dy = 1;
+                    }
+                    break;
+                case 'ArrowLeft':
+                case 'KeyA':
+                    if (dx !== 1) {
+                        dx = -1;
+                        dy = 0;
+                    }
+                    break;
+                case 'ArrowRight':
+                case 'KeyD':
+                    if (dx !== -1) {
+                        dx = 1;
+                        dy = 0;
+                    }
+                    break;
+                case 'Space':
+                    e.preventDefault();
+                    pauseGame();
+                    break;
+            }
+        });
+
+        // Initialize game
+        generateFood();
+        drawGame();
+    </script>
+</body>
+</html>
+

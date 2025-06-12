@@ -1,5 +1,8 @@
 # 🐍 Classic Snake Game
 
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-4CAF50?style=for-the-badge)](https://william-osei.github.io/snake_game)
+[![Repository](https://img.shields.io/badge/📁_Repository-2196F3?style=for-the-badge)](https://github.com/William-osei/snake_game)
+
 A classic Snake game implementation available in both Python (with GUI) and HTML5/JavaScript versions. Features smooth gameplay, progressive difficulty, score tracking, and collision detection algorithms.
 
 ## 🎮 Features
