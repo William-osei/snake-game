@@ -1,7 +1,7 @@
 # 🐍 Classic Snake Game
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-4CAF50?style=for-the-badge)](https://william-osei.github.io/snake_game)
-[![Repository](https://img.shields.io/badge/📁_Repository-2196F3?style=for-the-badge)](https://github.com/William-osei/snake_game)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-4CAF50?style=for-the-badge)](https://william-osei.github.io/snake-game)
+[![Repository](https://img.shields.io/badge/📁_Repository-2196F3?style=for-the-badge)](https://github.com/William-osei/snake-game)
 
 A classic Snake game implementation available in both Python (with GUI) and HTML5/JavaScript versions. Features smooth gameplay, progressive difficulty, score tracking, and collision detection algorithms.
 
@@ -48,12 +48,14 @@ A classic Snake game implementation available in both Python (with GUI) and HTML
 ## 📁 Project Structure
 
 ```
-snake_game/
+snake-game/
 ├── snake_game.py           # Main Python game file
 ├── database_manager.py     # Database operations
 ├── test_database.py        # Database testing
-├── snake-game.html         # Web version
+├── index.html              # Web version (main)
+├── snake-game.html         # Alternative web version
 ├── test_snake_game.db      # SQLite database
+├── LICENSE                 # MIT License
 └── README.md              # Project documentation
 ```
 
