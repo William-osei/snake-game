@@ -210,6 +210,46 @@
             padding: 2rem 0;
         }
         
+        .game-settings {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .setting-group label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .game-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .game-select:hover {
+            border-color: #667eea;
+        }
+        
+        .game-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
         @media (max-width: 768px) {
             .project-detail h1 {
                 font-size: 2rem;
@@ -225,6 +265,11 @@
             }
             
             nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .game-settings {
                 flex-direction: column;
                 gap: 1rem;
             }
@@ -287,11 +332,33 @@
 
                     <canvas id="gameCanvas" class="game-board" width="400" height="400"></canvas>
 
-                    <div class="game-controls">
-                        <button id="startBtn" class="game-btn">Start Game</button>
-                        <button id="pauseBtn" class="game-btn" disabled>Pause</button>
-                        <button id="resetBtn" class="game-btn">Reset</button>
-                    </div>
+        <div class="game-settings">
+            <div class="setting-group">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty" class="game-select">
+                    <option value="easy">🐌 Easy</option>
+                    <option value="normal" selected>🐍 Normal</option>
+                    <option value="hard">⚡ Hard</option>
+                    <option value="extreme">🔥 Extreme</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label for="gameMode">Game Mode:</label>
+                <select id="gameMode" class="game-select">
+                    <option value="classic" selected>🎯 Classic</option>
+                    <option value="powerup">🎁 Power-ups</option>
+                    <option value="timed">⏱️ Timed</option>
+                    <option value="survival">💀 Survival</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="game-controls">
+            <button id="startBtn" class="game-btn">Start Game</button>
+            <button id="pauseBtn" class="game-btn" disabled>Pause</button>
+            <button id="resetBtn" class="game-btn">Reset</button>
+            <button id="leaderboardBtn" class="game-btn">🏆 Leaderboard</button>
+        </div>
 
                     <div class="instructions">
                         <h4>🎯 How to Play</h4>
